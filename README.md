@@ -36,18 +36,15 @@ AnimalShelterAI — это десктопное приложение для ко
 
 ---
 
-## 📁 Структура проекта
-AnimalShelterAI/
-├── Core/
-│ ├── Entities/ # Классы сущностей (Animal, User, etc.)
-│ └── Interfaces/ # Интерфейсы репозиториев
-├── Infrastructure/
-│ ├── Data/ # Контекст базы данных (ShelterDbContext)
-│ └── Repositories/ # Реализации репозиториев
-├── Services/ # Сервисы (AnimalService, AuthService)
-├── Views/ # Окна и UserControl'ы
-├── Converters/ # Конвертеры для XAML
-├── Assets/ # Ресурсы (иконки, изображения)
-├── Properties/ # Настройки проекта
-├── appsettings.json # Конфигурация (строка подключения к БД)
-└── CustomResources.xaml # Стили приложения
+### Требования
+
+- Windows 10/11 (64-bit)
+- .NET 8 Runtime
+- PostgreSQL 15 или выше
+
+### Шаги для запуска
+
+1. **Клонировать репозиторий**
+```bash
+git clone https://github.com/alialialilalalala/Shelter-for-animal.git
+cd Shelter-for-animal

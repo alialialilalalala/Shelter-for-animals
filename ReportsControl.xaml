@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="AnimalShelterAI.ReportsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <UserControl.Resources>
+        <DropShadowEffect x:Key="CardShadow" Color="#20000000" BlurRadius="10" ShadowDepth="3" Opacity="0.15"/>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="#E1E8ED"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="25">
+        <StackPanel>
+            <TextBlock Text="Отчеты и статистика" FontSize="28" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,25"/>
+
+            <!-- Карточки отчетов -->
+            <UniformGrid Columns="2" Margin="0,0,0,25">
+                <!-- Отчет по животным -->
+                <Border Margin="0,0,15,15" Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="25" Effect="{StaticResource CardShadow}" Cursor="Hand">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#667EEA"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel>
+                        <TextBlock Text="📊" FontSize="40" Margin="0,0,0,10"/>
+                        <TextBlock Text="Отчет по животным" FontSize="18" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                        <TextBlock Text="Детальная статистика по всем животным в приюте" FontSize="13" Foreground="#7F8C8D" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                        <Button Content="Сформировать отчет" Click="BtnAnimalsReport_Click" Height="40" Style="{StaticResource PrimaryButton}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Отчет по заявкам -->
+                <Border Margin="0,0,0,15" Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="25" Effect="{StaticResource CardShadow}" Cursor="Hand">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#F39C12"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel>
+                        <TextBlock Text="📋" FontSize="40" Margin="0,0,0,10"/>
+                        <TextBlock Text="Отчет по заявкам" FontSize="18" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                        <TextBlock Text="Статистика по заявкам на усыновление" FontSize="13" Foreground="#7F8C8D" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                        <Button Content="Сформировать отчет" Click="BtnApplicationsReport_Click" Height="40" Style="{StaticResource PrimaryButton}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Финансовый отчет -->
+                <Border Margin="0,0,15,15" Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="25" Effect="{StaticResource CardShadow}" Cursor="Hand">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#27AE60"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel>
+                        <TextBlock Text="💰" FontSize="40" Margin="0,0,0,10"/>
+                        <TextBlock Text="Финансовый отчет" FontSize="18" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                        <TextBlock Text="Отчет по доходам и расходам приюта" FontSize="13" Foreground="#7F8C8D" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                        <Button Content="Сформировать отчет" Click="BtnFinancialReport_Click" Height="40" Style="{StaticResource PrimaryButton}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Отчет по волонтерам -->
+                <Border Margin="0,0,0,15" Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="25" Effect="{StaticResource CardShadow}" Cursor="Hand">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="#9B59B6"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel>
+                        <TextBlock Text="👥" FontSize="40" Margin="0,0,0,10"/>
+                        <TextBlock Text="Отчет по волонтерам" FontSize="18" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,15"/>
+                        <TextBlock Text="Статистика работы волонтеров" FontSize="13" Foreground="#7F8C8D" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                        <Button Content="Сформировать отчет" Click="BtnVolunteersReport_Click" Height="40" Style="{StaticResource PrimaryButton}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Общая статистика -->
+            <Border Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="25" Effect="{StaticResource CardShadow}">
+                <StackPanel>
+                    <TextBlock Text="Общая статистика" FontSize="20" FontWeight="SemiBold" Foreground="#2C3E50" Margin="0,0,0,20"/>
+                    <UniformGrid Columns="4">
+                        <StackPanel Margin="0,0,15,0">
+                            <TextBlock x:Name="TotalAnimalsStat" Text="0" FontSize="32" FontWeight="Bold" Foreground="#667EEA"/>
+                            <TextBlock Text="Всего животных" FontSize="13" Foreground="#7F8C8D"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,15,0">
+                            <TextBlock x:Name="TotalApplicationsStat" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F39C12"/>
+                            <TextBlock Text="Всего заявок" FontSize="13" Foreground="#7F8C8D"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,15,0">
+                            <TextBlock x:Name="TotalVolunteersStat" Text="0" FontSize="32" FontWeight="Bold" Foreground="#9B59B6"/>
+                            <TextBlock Text="Волонтеров" FontSize="13" Foreground="#7F8C8D"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock x:Name="TotalUsersStat" Text="0" FontSize="32" FontWeight="Bold" Foreground="#27AE60"/>
+                            <TextBlock Text="Пользователей" FontSize="13" Foreground="#7F8C8D"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,90 @@
+﻿<Window x:Class="AnimalShelterAI.ApplicationReportDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Параметры отчёта по заявкам"
+        Height="600" Width="750"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+                Icon="C:\Users\alialialilalala\Pictures\Screenshots\shelter.png"
+
+        Background="#F5F7FA"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <DropShadowEffect x:Key="WindowShadow" BlurRadius="30" ShadowDepth="0" Opacity="0.25" Color="Black"/>
+        <Style x:Key="InfoLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#4A5568"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="White" CornerRadius="20" Effect="{StaticResource WindowShadow}">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource PrimaryGradient}" CornerRadius="12" Padding="15" Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📋" FontSize="24" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="Параметры отчёта по заявкам" FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1">
+                <!-- Статус заявки -->
+                <TextBlock Text="Статус заявки" Style="{StaticResource InfoLabel}"/>
+                <ComboBox x:Name="cmbStatus" Height="36" Margin="0,0,0,15">
+                    <ComboBoxItem Content="Все" IsSelected="True"/>
+                    <ComboBoxItem Content="На рассмотрении"/>
+                    <ComboBoxItem Content="Одобрена"/>
+                    <ComboBoxItem Content="Отклонена"/>
+                    <ComboBoxItem Content="Завершена"/>
+                </ComboBox>
+
+                <!-- Период подачи заявки -->
+                <TextBlock Text="Период подачи с" Style="{StaticResource InfoLabel}"/>
+                <DatePicker x:Name="dpStartDate" Height="36" Margin="0,0,0,10"/>
+                <TextBlock Text="по" Style="{StaticResource InfoLabel}"/>
+                <DatePicker x:Name="dpEndDate" Height="36" Margin="0,0,0,15"/>
+
+                <!-- Животное (опционально) -->
+                <TextBlock Text="Животное" Style="{StaticResource InfoLabel}"/>
+                <ComboBox x:Name="cmbAnimal" Height="36" DisplayMemberPath="DisplayName" SelectedValuePath="AnimalId"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Отмена" Click="BtnCancel_Click" Width="100" Height="35" Margin="0,0,10,0" Background="#E2E8F0" Foreground="#4A5568" BorderThickness="0" Cursor="Hand"/>
+                <Button Content="Сформировать" Click="BtnGenerate_Click" Width="140" Height="35" Style="{StaticResource PrimaryButton}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

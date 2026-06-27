@@ -1,0 +1,197 @@
+﻿<UserControl x:Class="AnimalShelterAI.MedicalControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="Transparent">
+
+    <UserControl.Resources>
+        <DropShadowEffect x:Key="CardShadow" Color="#20000000" BlurRadius="10" ShadowDepth="3" Opacity="0.15"/>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style x:Key="InfoLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#7F8C8D"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+
+        <Style x:Key="InfoValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource DangerGradient}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель выбора животного -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E1E8ED" BorderThickness="0,0,0,1" Padding="20" Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Животное:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <ComboBox x:Name="CmbAnimalFilter" Width="280" Height="36" SelectionChanged="CmbAnimalFilter_SelectionChanged"
+                              DisplayMemberPath="DisplayName" SelectedValuePath="AnimalId"/>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="🔄 Обновить" Click="BtnRefresh_Click" Width="120" Height="36" Style="{StaticResource PrimaryButton}"/>
+            </Grid>
+        </Border>
+
+        <!-- Карточка медицинской карты (отображается, когда выбрано животное) -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20" x:Name="MedicalCardPanel" Visibility="Collapsed">
+            <StackPanel>
+                <!-- Информация о животном -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="🐾 Информация о животном" Style="{StaticResource SectionHeader}"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Фото -->
+                            <Border Grid.Column="0" Width="120" Height="120" CornerRadius="10" Background="#F1F3F5" BorderBrush="#DEE2E6" BorderThickness="1" Margin="0,0,15,0">
+                                <Grid>
+                                    <Image x:Name="imgAnimalPhoto" Stretch="UniformToFill" Width="120" Height="120"/>
+                                    <TextBlock x:Name="txtNoPhoto" Text="🐾" FontSize="48" Foreground="#BDC3C7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible"/>
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock x:Name="txtAnimalName" FontSize="20" FontWeight="Bold" Foreground="#2C3E50"/>
+                                <TextBlock x:Name="txtAnimalDetails" FontSize="13" Foreground="#7F8C8D" Margin="0,5,0,0"/>
+                                <Border x:Name="borderAnimalStatus" CornerRadius="6" Padding="8,4" Margin="0,10,0,0" HorizontalAlignment="Left">
+                                    <TextBlock x:Name="txtAnimalStatus" FontSize="12" FontWeight="SemiBold" Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock x:Name="txtAnimalDescription" FontSize="13" Foreground="#34495E" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Панель действий -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="➕ Новая медицинская запись" Click="BtnAddRecord_Click" Width="200" Height="36" Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                            <Button Content="💉 Новая вакцинация" Click="BtnAddVaccination_Click" Width="180" Height="36" Style="{StaticResource PrimaryButton}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Медицинские записи -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="📋 Медицинские записи" Style="{StaticResource SectionHeader}"/>
+                        <DataGrid x:Name="MedicalRecordsGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                                  CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column"
+                                  RowHeight="60" Margin="0,10,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Дата" Binding="{Binding RecordDate, StringFormat='dd.MM.yyyy'}" Width="100"/>
+                                <DataGridTextColumn Header="Диагноз" Binding="{Binding Diagnosis}" Width="200"/>
+                                <DataGridTextColumn Header="Лечение" Binding="{Binding Treatment}" Width="250"/>
+                                <DataGridTextColumn Header="Ветеринар" Binding="{Binding VetName}" Width="150"/>
+                                <DataGridTextColumn Header="Следующий визит" Binding="{Binding NextVisitDate, StringFormat='dd.MM.yyyy'}" Width="120"/>
+                                <DataGridTemplateColumn Header="Действия" Width="130">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="👁" Tag="{Binding RecordId}" Click="BtnViewRecord_Click" Margin="2" Padding="6" Background="#ECF0F1" Foreground="#2C3E50" Style="{StaticResource PrimaryButton}" ToolTip="Просмотр"/>
+                                                <Button Content="✏️" Tag="{Binding RecordId}" Click="BtnEditRecord_Click" Margin="2" Padding="6" Background="#FFF3E0" Style="{StaticResource PrimaryButton}"/>
+                                                <Button Content="🗑" Tag="{Binding RecordId}" Click="BtnDeleteRecord_Click" Margin="2" Padding="6" Background="#FFEBEE" Style="{StaticResource DangerButton}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Вакцинации -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="💉 Вакцинации" Style="{StaticResource SectionHeader}"/>
+                        <DataGrid x:Name="VaccinationsGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                                  CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column"
+                                  RowHeight="50" Margin="0,10,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Название вакцины" Binding="{Binding VaccineName}" Width="200"/>
+                                <DataGridTextColumn Header="Дата вакцинации" Binding="{Binding VaccinationDate, StringFormat='dd.MM.yyyy'}" Width="120"/>
+                                <DataGridTextColumn Header="Дата следующей" Binding="{Binding NextVaccinationDate, StringFormat='dd.MM.yyyy'}" Width="120"/>
+                                <DataGridTextColumn Header="Ветеринар" Binding="{Binding VetName}" Width="150"/>
+                                <DataGridTemplateColumn Header="Действия" Width="130">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="👁" Tag="{Binding VaccinationId}" Click="BtnViewVaccination_Click" Margin="2" Padding="6" Background="#ECF0F1" Foreground="#2C3E50" Style="{StaticResource PrimaryButton}" ToolTip="Просмотр"/>
+                                                <Button Content="✏️" Tag="{Binding VaccinationId}" Click="BtnEditVaccination_Click" Margin="2" Padding="6" Background="#FFF3E0" Style="{StaticResource PrimaryButton}"/>
+                                                <Button Content="🗑" Tag="{Binding VaccinationId}" Click="BtnDeleteVaccination_Click" Margin="2" Padding="6" Background="#FFEBEE" Style="{StaticResource DangerButton}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Заглушка, когда не выбрано животное -->
+        <Border Grid.Row="1" Background="#F8FAFC" CornerRadius="12" Margin="20" 
+                x:Name="EmptyStatePanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="🐾" FontSize="64" HorizontalAlignment="Center" Foreground="#BDC3C7"/>
+                <TextBlock Text="Выберите животное из списка" FontSize="16" Foreground="#95A5A6" Margin="0,15,0,0"/>
+                <TextBlock Text="чтобы просмотреть медицинскую карту" FontSize="13" Foreground="#A0AEC0" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

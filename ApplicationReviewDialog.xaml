@@ -1,0 +1,239 @@
+﻿<Window x:Class="AnimalShelterAI.ApplicationReviewDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Просмотр заявки на усыновление" Height="850" Width="900"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResize" Background="#F5F7FA"
+                Icon="C:\Users\alialialilalala\Pictures\Screenshots\shelter.png"
+>
+
+    <Window.Resources>
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="15" ShadowDepth="3" Opacity="0.12" Color="#000000"/>
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="0,5"/>
+        </Style>
+        <Style x:Key="InfoLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#7F8C8D"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style x:Key="InfoValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.9"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource SuccessGradient}"/>
+        </Style>
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource DangerGradient}"/>
+        </Style>
+        <Style x:Key="WarningButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource WarningGradient}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryGradient}" CornerRadius="12" Padding="20" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📋" FontSize="32" Foreground="White" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                <StackPanel>
+                    <TextBlock Text="Заявка на усыновление" FontSize="22" FontWeight="SemiBold" Foreground="White"/>
+                    <TextBlock x:Name="txtApplicationId" Text="№ заявки" FontSize="13" Foreground="#B0BEC5"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Статус -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Текущий статус" FontSize="14" Foreground="#7F8C8D"/>
+                            <TextBlock x:Name="txtStatus" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <Border x:Name="borderStatus" Grid.Column="1" CornerRadius="8" Padding="20,10" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtStatusBadge" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Животное -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="🐾 Животное" Style="{StaticResource SectionHeader}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Width="100" Height="100" CornerRadius="10" Background="#F1F3F5" BorderBrush="#DEE2E6" BorderThickness="1" Margin="0,0,15,0">
+                                <Grid>
+                                    <Image x:Name="imgAnimalPhoto" Stretch="UniformToFill" Width="100" Height="100"/>
+                                    <TextBlock x:Name="txtNoPhoto" Text="🐾" FontSize="36" Foreground="#BDC3C7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible"/>
+                                </Grid>
+                            </Border>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock x:Name="txtAnimalName" FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                                <TextBlock x:Name="txtAnimalDetails" FontSize="13" Foreground="#7F8C8D" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="txtAnimalStatus" FontSize="12" Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Заявитель -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="👤 Заявитель" Style="{StaticResource SectionHeader}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="ФИО:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtUserFullName" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Email:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="3" x:Name="txtUserEmail" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Телефон:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtUserPhone" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Дата регистрации:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="3" x:Name="txtUserRegDate" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Адрес:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" x:Name="txtUserAddress" Style="{StaticResource InfoValue}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Условия содержания -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="🏡 Условия содержания" Style="{StaticResource SectionHeader}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Тип жилья:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtLivingCondition" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Другие животные:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtOtherPets" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Дети в семье:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="txtChildren" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Опыт содержания:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="txtExperience" Style="{StaticResource InfoValue}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Причина -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="💭 Почему хочет взять животное" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock x:Name="txtReason" FontSize="13" Foreground="#34495E" TextWrapping="Wrap" LineHeight="1.5" Margin="0,0,0,15"/>
+                        <TextBlock Text="📝 Дополнительные комментарии заявителя" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock x:Name="txtNotes" FontSize="13" Foreground="#7F8C8D" FontStyle="Italic" TextWrapping="Wrap" LineHeight="1.5"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Комментарии менеджера -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}">
+                    <StackPanel>
+                        <TextBlock Text="💬 Комментарии менеджера" Style="{StaticResource SectionHeader}"/>
+                        <TextBox x:Name="txtManagerComment" Height="80" Padding="12,10" FontSize="13" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Background="#F8F9FA" BorderBrush="#DEE2E6" BorderThickness="1" IsEnabled="False" Margin="0,0,0,10"/>
+                        <Button x:Name="btnSaveComment" Content="💾 Сохранить комментарий" Click="BtnSaveComment_Click" Width="160" Height="32" Style="{StaticResource PrimaryButton}" Visibility="Collapsed"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Информация о менеджере -->
+                <Border Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,15" Effect="{StaticResource CardShadow}" x:Name="borderManagerInfo" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="👔 Информация о рассмотрении" Style="{StaticResource SectionHeader}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Менеджер:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtManagerName" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Дата решения:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="txtDecisionDate" Style="{StaticResource InfoValue}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Комментарий:" Style="{StaticResource InfoLabel}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="txtManagerCommentDisplay" Style="{StaticResource InfoValue}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки действий -->
+        <Border Grid.Row="2" Background="White" CornerRadius="12" Padding="20" Margin="0,20,0,0" BorderBrush="#E9ECEF" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnApprove" Content="✓ Одобрить" Click="BtnApprove_Click" Width="130" Height="45" Margin="0,0,8,0" Style="{StaticResource SuccessButton}" Visibility="Collapsed"/>
+                <Button x:Name="btnReject" Content="✗ Отклонить" Click="BtnReject_Click" Width="130" Height="45" Margin="0,0,8,0" Style="{StaticResource DangerButton}" Visibility="Collapsed"/>
+                <Button x:Name="btnChangeToApproved" Content="↺ Вернуть в одобрено" Click="BtnChangeToApproved_Click" Width="160" Height="45" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Visibility="Collapsed"/>
+                <Button x:Name="btnChangeToPending" Content="↻ Вернуть на рассмотрение" Click="BtnChangeToPending_Click" Width="180" Height="45" Margin="0,0,8,0" Style="{StaticResource WarningButton}" Visibility="Collapsed"/>
+                <Button x:Name="btnComplete" Content="✓ Завершить усыновление" Click="BtnComplete_Click" Width="180" Height="45" Margin="0,0,8,0" Style="{StaticResource PrimaryButton}" Visibility="Collapsed"/>
+                <Button Content="Закрыть" Click="BtnClose_Click" Width="120" Height="45" Background="#95A5A6" Foreground="White" FontSize="14" FontWeight="SemiBold" Cursor="Hand"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

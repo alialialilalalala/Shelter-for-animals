@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="AnimalShelterAI.AnimalsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <DropShadowEffect x:Key="HeaderShadow" Color="#20000000" BlurRadius="8" ShadowDepth="2" Opacity="0.1"/>
+        <DropShadowEffect x:Key="CardShadow" Color="#20000000" BlurRadius="15" ShadowDepth="3" Opacity="0.12"/>
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#E1E8ED"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель управления -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E1E8ED" BorderThickness="0,0,0,1" Padding="20" Effect="{StaticResource HeaderShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Фильтры - СЛЕВА с подписями -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <Border Background="#F8F9FA" CornerRadius="8" Padding="12,8" BorderBrush="#E1E8ED" BorderThickness="1" Width="250" Margin="0,0,20,0">
+                        <Grid>
+                            <TextBox x:Name="TxtSearch" TextChanged="TxtSearch_TextChanged" BorderThickness="0" Background="Transparent" FontSize="14" VerticalContentAlignment="Center" Padding="0,0,25,0"/>
+                            <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" Foreground="#95A5A6"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="Вид:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <ComboBox x:Name="CmbType" Width="140" Height="36" Margin="0,0,20,0" SelectionChanged="CmbType_SelectionChanged" Style="{StaticResource ModernComboBox}">
+                        <ComboBoxItem Content="Все виды" IsSelected="True"/>
+                        <ComboBoxItem Content="Собака"/>
+                        <ComboBoxItem Content="Кошка"/>
+                        <ComboBoxItem Content="Грызун"/>
+                        <ComboBoxItem Content="Птица"/>
+                        <ComboBoxItem Content="Кролик"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Статус:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <ComboBox x:Name="CmbStatus" SelectedIndex="0" Width="140" Height="36" SelectionChanged="CmbStatus_SelectionChanged" Style="{StaticResource ModernComboBox}">
+                        <ComboBoxItem Content="Все статусы" IsSelected="True"/>
+                        <ComboBoxItem Content="Ищет дом"/>
+                        <ComboBoxItem Content="Карантин"/>
+                        <ComboBoxItem Content="Забронирован"/>
+                        <ComboBoxItem Content="На лечении"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Кнопки - СПРАВА -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="BtnAdd" Content="➕ Добавить" Click="BtnAdd_Click" Width="130" Height="36" Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                    <Button x:Name="BtnExport" Content="📥 Экспорт" Click="BtnExport_Click" Width="120" Height="36" Style="{StaticResource PrimaryButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Список животных -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="25">
+            <ItemsControl x:Name="AnimalsGrid">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" Margin="0,0,0,20"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" BorderBrush="#E1E8ED" BorderThickness="1" CornerRadius="12" Padding="15" Margin="0,0,15,15" Effect="{StaticResource CardShadow}" Cursor="Hand">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="#667EEA"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                    <!-- Фото животного -->
+								<!-- Фото животного -->
+								<Border Grid.Row="0" Background="#F8F9FA" Height="150" CornerRadius="8" Margin="0,0,0,10">
+									<Grid>
+										<!-- Изображение (видно, когда есть фото) -->
+										<Image Source="{Binding PhotoUrl}"
+											   Stretch="UniformToFill"
+											   Width="150"
+											   Height="150">
+											<Image.Style>
+												<Style TargetType="Image">
+													<Setter Property="Visibility" Value="Collapsed"/>
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding HasPhoto}" Value="True">
+															<Setter Property="Visibility" Value="Visible"/>
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</Image.Style>
+										</Image>
+
+										<!-- Заглушка (видно, когда нет фото) -->
+										<Border Background="#F8F9FA"
+												Width="150"
+												Height="150"
+												CornerRadius="8">
+											<Border.Style>
+												<Style TargetType="Border">
+													<Setter Property="Visibility" Value="Visible"/>
+													<Style.Triggers>
+														<DataTrigger Binding="{Binding HasPhoto}" Value="True">
+															<Setter Property="Visibility" Value="Collapsed"/>
+														</DataTrigger>
+													</Style.Triggers>
+												</Style>
+											</Border.Style>
+											<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+												<TextBlock Text="🐾" FontSize="48" Foreground="#BDC3C7"/>
+												<TextBlock Text="Нет фото" FontSize="12" Foreground="#95A5A6" Margin="0,5,0,0"/>
+											</StackPanel>
+										</Border>
+									</Grid>
+								</Border>
+                                  
+                                <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                                    <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,5"/>
+                                    <TextBlock FontSize="13" Foreground="#7F8C8D"><Run Text="Вид: "/><Run Text="{Binding Type}" FontWeight="SemiBold"/></TextBlock>
+                                    <TextBlock FontSize="13" Foreground="#7F8C8D"><Run Text="Порода: "/><Run Text="{Binding Breed}" FontWeight="SemiBold"/></TextBlock>
+                                    <TextBlock FontSize="13" Foreground="#7F8C8D"><Run Text="Пол: "/><Run Text="{Binding Gender}" FontWeight="SemiBold"/></TextBlock>
+                                    <TextBlock FontSize="13" Foreground="#7F8C8D"><Run Text="Возраст: "/><Run Text="{Binding Age}" FontWeight="SemiBold"/><Run Text=" лет"/></TextBlock>
+                                    <Border Background="#EBF5FB" CornerRadius="6" Padding="8,4" Margin="0,8,0,0" HorizontalAlignment="Left">
+                                        <TextBlock Text="{Binding Status}" FontSize="12" FontWeight="SemiBold" Foreground="#3498DB"/>
+                                    </Border>
+                                </StackPanel>
+                                <UniformGrid Grid.Row="2" Columns="4">
+                                    <!-- Просмотр -->
+                                    <Button Content="👁" Tag="{Binding Id}" Click="BtnView_Click" Margin="2" Padding="8" Background="#ECF0F1" Foreground="#4A5568" Style="{StaticResource IconButton}" ToolTip="Просмотр"/>
+
+                                  
+                                    <!-- Редактирование (только для ролей с правами) -->
+                                    <Button Content="✏️" Tag="{Binding Id}" Click="BtnEdit_Click" Margin="2" Padding="8" Background="#FFF3E0" Foreground="#ED8936" Style="{StaticResource IconButton}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                    <!-- Заявка -->
+                                    <Button Content="🏠" Tag="{Binding Id}" Click="BtnAdopt_Click" Margin="2" Padding="8" Background="#E8F8F5" Foreground="#38A169" Style="{StaticResource IconButton}" ToolTip="Забрать"/>
+                                </UniformGrid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

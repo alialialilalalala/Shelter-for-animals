@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="AnimalShelterAI.UsersControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <DropShadowEffect x:Key="HeaderShadow" Color="#20000000" BlurRadius="8" ShadowDepth="2" Opacity="0.1"/>
+        <DropShadowEffect x:Key="CardShadow" Color="#20000000" BlurRadius="10" ShadowDepth="3" Opacity="0.15"/>
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E2E8F0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#E1E8ED"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="#E1E8ED"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Панель управления -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E1E8ED" BorderThickness="0,0,0,1" Padding="20" Effect="{StaticResource HeaderShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Фильтры - СЛЕВА с подписями -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <Border Background="#F8F9FA" CornerRadius="8" Padding="12,8" BorderBrush="#E1E8ED" BorderThickness="1" Width="250" Margin="0,0,20,0">
+                        <Grid>
+                            <TextBox x:Name="TxtSearch" TextChanged="TxtSearch_TextChanged" BorderThickness="0" Background="Transparent" FontSize="14" VerticalContentAlignment="Center" Padding="0,0,25,0" ToolTip="Поиск по имени, email или логину"/>
+                            <TextBlock Text="🔍" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" Foreground="#95A5A6" IsHitTestVisible="False"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="Роль:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#4A5568"/>
+                    <ComboBox x:Name="CmbRoleFilter" Width="140" Height="36" SelectionChanged="CmbRoleFilter_SelectionChanged" Style="{StaticResource ModernComboBox}">
+                        <ComboBoxItem Content="Все роли" IsSelected="True"/>
+                        <ComboBoxItem Content="Администратор"/>
+                        <ComboBoxItem Content="Менеджер"/>
+                        <ComboBoxItem Content="Ветеринар"/>
+                        <ComboBoxItem Content="Волонтер"/>
+                        <ComboBoxItem Content="Пользователь"/>
+                        <ComboBoxItem Content="Сотрудник"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Кнопки - СПРАВА -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="BtnAdd" Content="➕ Добавить пользователя" Click="BtnAdd_Click" Width="210" Height="36" Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                    <Button Content="🔄 Обновить" Click="BtnRefresh_Click" Width="130" Height="36" Style="{StaticResource PrimaryButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <DataGrid x:Name="UsersGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" BorderThickness="0" GridLinesVisibility="None" RowBackground="White" AlternatingRowBackground="#F8F9FA" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" Margin="25" RowHeight="50" MouseDoubleClick="UsersGrid_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding UserId}" Width="60" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="220" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTextColumn Header="Логин" Binding="{Binding Username}" Width="150" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="130" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTextColumn Header="Роль" Binding="{Binding Role}" Width="120" HeaderStyle="{StaticResource DataGridHeaderStyle}"/>
+                <DataGridTemplateColumn Header="Статус" Width="100" HeaderStyle="{StaticResource DataGridHeaderStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="6" Padding="8,4" Background="{Binding StatusColor}" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Status}" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Действия" Width="180" HeaderStyle="{StaticResource DataGridHeaderStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="✏️" Tag="{Binding UserId}" Click="BtnEdit_Click" Margin="2" Padding="8" Background="#FFF3E0" Foreground="#ED8936" Style="{StaticResource IconButton}" ToolTip="Редактировать"/>
+                                <Button Content="🔒" Tag="{Binding UserId}" Click="BtnToggleStatus_Click" Margin="2" Padding="8" Background="#ECF0F1" Foreground="#4A5568" Style="{StaticResource IconButton}" ToolTip="Изменить статус"/>
+                                <Button Content="🗑" Tag="{Binding UserId}" Click="BtnDelete_Click" Margin="2" Padding="8" Background="#FFEBEE" Foreground="#E53E3E" Style="{StaticResource IconButton}" ToolTip="Удалить"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
